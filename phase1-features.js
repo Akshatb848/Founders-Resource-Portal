@@ -36,14 +36,25 @@ function adminPage(){
  if(adminTab==='Publishing') body='<div class="data-table"><div class="data-row head"><span>Content</span><span>Visibility</span><span>Version</span><span>State</span></div><div class="data-row"><span>MIS Reporting Template</span><span>Portfolio-wide</span><span>v3.2</span><span class="status resolved">Published</span></div><div class="data-row"><span>EV Financing Ecosystem</span><span>Exponent Energy</span><span>Sep 2026</span><span class="status resolved">Published</span></div></div>';
  return head('INTERNAL CONTROL PLANE','Admin workspace','A role-protected demonstration of access, ownership, routing and publishing.','<button class="btn primary" data-action="invite-user">Invite company user</button>')+'<div class="detail-banner">'+svg('shield')+'<span><strong>Internal YourNest view</strong><small>Founders cannot access this workspace in production. It is visible here only for stakeholder demonstration.</small></span></div><div class="admin-grid"><aside class="card">'+tabs.map(function(t){return '<button class="network-tab '+(t===adminTab?'active':'')+'" data-admin="'+t+'">'+t+'</button>';}).join('')+'</aside><section class="card"><div class="section-title"><h2>'+adminTab+'</h2><button class="btn ghost" data-action="admin-add">+ Add</button></div>'+body+'</section></div>';
 }
+const dashboardNews=[
+ {id:1,label:'POLICY',title:'Battery policy compliance checklist updated',summary:'The Exponent team should review the refreshed operating checklist and confirm ownership of the applicable actions.',why:'Selected because Exponent Energy operates in electric mobility and energy infrastructure.',published:'Today · 9:30 AM',source:'YourNest research desk',expires:'28 Oct 2026'},
+ {id:2,label:'MARKET',title:'EV financing activity: Q3 founder brief',summary:'A short view of financing patterns, investor themes and signals relevant to growth-stage mobility businesses.',why:'Selected for Exponent Energy’s sector and Series B stage.',published:'Yesterday · 4:15 PM',source:'Approved public sources',expires:'27 Oct 2026'},
+ {id:3,label:'REGULATORY',title:'Connected-vehicle data readiness: action note',summary:'Product and compliance teams can use this brief to review data-governance responsibilities and next steps.',why:'Selected for Exponent Energy’s connected-energy product context.',published:'24 Sep · 11:00 AM',source:'YourNest legal network',expires:'24 Oct 2026'}
+];
+const originalDashboard=pages.dashboard;
+function dashboardNewsBar(){
+ return '<section class="news-flash" aria-label="Important sector news for Exponent Energy"><div class="news-flash-label"><span class="pulse-dot"></span><span><strong>NEWS FLASHES</strong><small>Selected for Exponent Energy</small></span></div><div class="news-flash-items">'+dashboardNews.map(function(n){return '<button class="news-flash-item" data-dashboard-news="'+n.id+'" aria-label="Read more: '+n.title+'"><span>'+n.label+'</span><strong>'+n.title+'</strong><small>'+n.published+'</small></button>';}).join('')+'</div><button class="news-flash-all" data-goto="updates">View all <span aria-hidden="true">→</span></button></section>';
+}
+pages.dashboard=function(){return dashboardNewsBar()+originalDashboard();};
 pages.updates=updatesPage;
 pages.admin=adminPage;
 pages.resources=industryResourcesPage;
 document.addEventListener('click',function(e){
- var el=e.target.closest('[data-admin],[data-industry],[data-action="sector-detail"],[data-action="update-settings"],[data-action="approve-user"],[data-action="invite-user"],[data-action="admin-add"]');
+ var el=e.target.closest('[data-admin],[data-industry],[data-dashboard-news],[data-action="sector-detail"],[data-action="update-settings"],[data-action="approve-user"],[data-action="invite-user"],[data-action="admin-add"]');
  if(!el)return;
  if(el.dataset.admin){adminTab=el.dataset.admin;render('admin');return;}
  if(el.dataset.industry){industrySub=el.dataset.industry;render('resources');return;}
+ if(el.dataset.dashboardNews){var n=dashboardNews.find(function(x){return x.id==el.dataset.dashboardNews;});modal(n.title,'<div class="news-detail-meta"><span class="tag">'+n.label+'</span><span>'+n.published+'</span></div><p class="lead">'+n.summary+'</p><div class="notice"><strong>Why you are seeing this:</strong> '+n.why+'</div><div class="detail-grid"><div><small>Curated by</small><strong>'+n.source+'</strong></div><div><small>Visible until</small><strong>'+n.expires+'</strong></div></div>','Mark as read',function(){toast('News flash marked as read');});}
  if(el.dataset.action==='sector-detail'){var u=sectorUpdates.find(function(x){return x.id==el.dataset.id;});modal(u.title,'<span class="tag">'+u.type.toUpperCase()+'</span><p>'+u.summary+'</p><div class="notice"><strong>Source:</strong> '+u.source+' · This brief expires '+u.expires+'.</div>','Mark as read',function(){toast('Sector update marked as read');});}
  if(el.dataset.action==='update-settings')toast('Sector-update preferences saved');
  if(el.dataset.action==='approve-user'){el.closest('.data-row').querySelector('.status').textContent='Approved';toast('Company user approved');}
