@@ -3,6 +3,26 @@ const sectorUpdates=[
  {id:2,type:'Market',title:'India EV financing activity — Q3 pulse',summary:'Curated funding patterns and strategic signals for growth-stage mobility companies.',date:'Yesterday',expires:'27 Oct 2026',source:'Approved public sources'},
  {id:3,type:'Regulatory',title:'Data-protection readiness for connected vehicles',summary:'A practical checklist for product and compliance leaders.',date:'24 Sep',expires:'24 Oct 2026',source:'YourNest legal network'}
 ];
+const industryResources=[
+ {id:11,cat:'Industry',sub:'Market Research',title:'Industry Market Sizing Workbook',desc:'A guided TAM, SAM and SOM template with source notes and assumption tracking.',type:'XLSX',review:'Reviewed 26 Sep 2026'},
+ {id:12,cat:'Industry',sub:'Regulatory & Policy',title:'Regulatory Impact Assessment',desc:'A structured template to translate policy changes into business actions, owners and deadlines.',type:'DOCX',review:'Reviewed 25 Sep 2026'},
+ {id:13,cat:'Industry',sub:'Competitive Landscape',title:'Competitive Landscape Map',desc:'A comparison template covering segments, positioning, capabilities, pricing and differentiators.',type:'XLSX',review:'Reviewed 24 Sep 2026'},
+ {id:14,cat:'Industry',sub:'Industry Benchmarks',title:'Operating Benchmark Scorecard',desc:'A configurable scorecard for comparing relevant operating indicators with sector reference points.',type:'XLSX',review:'Reviewed 23 Sep 2026'},
+ {id:15,cat:'Industry',sub:'Ecosystem & Partnerships',title:'Industry Ecosystem Mapping Canvas',desc:'A practical canvas for mapping regulators, partners, associations, suppliers and strategic channels.',type:'PPTX',review:'Reviewed 22 Sep 2026'}
+];
+resources.push.apply(resources,industryResources);
+var industrySub='All';
+function industryResourceCard(r){
+ return '<article class="card resource-card"><span class="tag">'+(r.sub?r.sub.toUpperCase():r.cat.toUpperCase())+' · '+r.type+'</span><h3>'+r.title+'</h3><p>'+r.desc+'</p><div class="meta">'+r.review+'</div><div class="card-actions"><button class="btn primary" data-action="download" data-id="'+r.id+'">'+svg('download')+' Download</button><button class="btn ghost" data-action="resource-detail" data-id="'+r.id+'">View details</button></div></article>';
+}
+function industryResourcesPage(){
+ var cats=['All','Legal','Finance','Hiring','Operations','Compliance','Fundraising','Industry'];
+ var subs=['All','Market Research','Regulatory & Policy','Competitive Landscape','Industry Benchmarks','Ecosystem & Partnerships'];
+ var list=state.resourceFilter==='All'?resources:resources.filter(function(r){return r.cat===state.resourceFilter;});
+ if(state.resourceFilter==='Industry'&&industrySub!=='All') list=list.filter(function(r){return r.sub===industrySub;});
+ var subnav=state.resourceFilter==='Industry'?'<div class="industry-subsections"><span class="section-label">Industry sub-sections</span><div class="subfilters">'+subs.map(function(s){return '<button class="chip '+(s===industrySub?'active':'')+'" data-industry="'+s+'">'+s+'</button>';}).join('')+'</div></div>':'';
+ return head('CURATED KNOWLEDGE','Resource Library','Trusted templates, guides and reference material for company-building.','<button class="btn ghost" data-action="suggest-resource">Can’t find it?</button>')+'<div class="filters">'+cats.map(function(c){return '<button class="chip '+(c===state.resourceFilter?'active':'')+'" data-filter="'+c+'">'+c+'</button>';}).join('')+'</div>'+subnav+'<div class="grid cols-3">'+list.map(industryResourceCard).join('')+'</div>';
+}
 function updatesPage(){
  var cards=sectorUpdates.map(function(u){return '<article class="card update-card"><div class="update-meta"><span class="tag">'+u.type.toUpperCase()+'</span><time>'+u.date+'</time></div><h2>'+u.title+'</h2><p>'+u.summary+'</p><div class="update-foot"><span>Source: '+u.source+'</span><span>Visible until '+u.expires+'</span><button class="text-btn" data-action="sector-detail" data-id="'+u.id+'">Read brief →</button></div></article>';}).join('');
  return head('CURATED INTELLIGENCE','Sector Updates','Short-lived, relevant signals for electric mobility and energy; curated for action, not noise.','<button class="btn ghost" data-action="update-settings">Update preferences</button>')+'<div class="updates-layout"><section class="updates-feed">'+cards+'</section><aside class="card update-policy"><span class="eyebrow">CURATION POLICY</span><h2>Useful by design</h2><p>Updates are manually approved, tagged to a sector and automatically expire.</p><ul><li>No general news feed</li><li>No investment-performance data</li><li>No DealScreener dependency</li><li>Admin can publish or withdraw</li></ul></aside></div>';
@@ -18,10 +38,12 @@ function adminPage(){
 }
 pages.updates=updatesPage;
 pages.admin=adminPage;
+pages.resources=industryResourcesPage;
 document.addEventListener('click',function(e){
- var el=e.target.closest('[data-admin],[data-action="sector-detail"],[data-action="update-settings"],[data-action="approve-user"],[data-action="invite-user"],[data-action="admin-add"]');
+ var el=e.target.closest('[data-admin],[data-industry],[data-action="sector-detail"],[data-action="update-settings"],[data-action="approve-user"],[data-action="invite-user"],[data-action="admin-add"]');
  if(!el)return;
  if(el.dataset.admin){adminTab=el.dataset.admin;render('admin');return;}
+ if(el.dataset.industry){industrySub=el.dataset.industry;render('resources');return;}
  if(el.dataset.action==='sector-detail'){var u=sectorUpdates.find(function(x){return x.id==el.dataset.id;});modal(u.title,'<span class="tag">'+u.type.toUpperCase()+'</span><p>'+u.summary+'</p><div class="notice"><strong>Source:</strong> '+u.source+' · This brief expires '+u.expires+'.</div>','Mark as read',function(){toast('Sector update marked as read');});}
  if(el.dataset.action==='update-settings')toast('Sector-update preferences saved');
  if(el.dataset.action==='approve-user'){el.closest('.data-row').querySelector('.status').textContent='Approved';toast('Company user approved');}
