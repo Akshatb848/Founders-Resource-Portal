@@ -1,5 +1,7 @@
 # Publishes the static prototype in dist/ to GitHub Pages.
 # One-time setup: repository Settings -> Pages -> Source: "GitHub Actions".
+# If a run fails because Pages was not yet enabled, re-run it from the Actions tab
+# after enabling; no new commit is needed.
 name: Deploy prototype to GitHub Pages
 
 on:
