@@ -1,0 +1,19 @@
+# Local/runtime files
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+!.env.example
+
+# Dependencies and generated caches
+node_modules/
+.cache/
+.parcel-cache/
+
+# Meeting media and transcription working files
+*.wav
+*.mp3
+*.mp4
+meeting-*-transcription/
+
