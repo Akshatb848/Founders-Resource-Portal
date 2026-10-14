@@ -189,7 +189,8 @@ Already demonstrated:
 - 100-Day Playbook progress;
 - events and notifications;
 - administration concept;
-- responsive YourNest visual treatment.
+- responsive YourNest visual treatment;
+- resource-to-request hand-off (frontend only): every resource detail view has an **Ask YourNest for help** action that prefills company, resource, category and context, and the resulting request shows its originating resource.
 
 Partially implemented:
 
@@ -208,7 +209,7 @@ Not yet implemented:
 - actual company/content visibility rules;
 - relationship-team history;
 - approval and audit engines;
-- contextual resource-to-request hand-off;
+- persisted resource-to-request hand-off (the frontend demonstration does not save or route requests);
 - readiness assessment and result history;
 - production notifications;
 - OCI deployment, monitoring and backups.
@@ -266,7 +267,7 @@ Suggested logical layers:
 ## 9. Open stakeholder decisions
 
 - final founder authentication method;
-- final request categories and priority meanings;
+- final request categories and priority meanings (Industry resources currently prefill "Other" because no matching category exists; the hand-off is also offered on every resource until "applicable resources" is defined);
 - routing responsibility matrix;
 - final Legal/Finance/Compliance/People taxonomy;
 - redistributable versus link-only sources;
