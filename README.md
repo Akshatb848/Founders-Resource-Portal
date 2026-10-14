@@ -8,6 +8,8 @@ The portal is a standalone YourNest product. It must run on separate infrastruct
 
 Public prototype: <https://yournest-founder-resource-portal-phase1.major-project848.chatgpt.site/>
 
+GitHub Pages preview: <https://akshatb848.github.io/Founders-Resource-Portal/> — deployed automatically from `dist/` on every push to `main` by `.github/workflows/pages.yml` (requires Settings → Pages → Source: GitHub Actions).
+
 The current frontend demonstrates:
 
 - a personalised founder dashboard for Arun / Exponent Energy;
