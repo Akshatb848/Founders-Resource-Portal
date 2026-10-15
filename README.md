@@ -6,9 +6,9 @@ The portal is a standalone YourNest product. It must run on separate infrastruct
 
 ## Current demonstration
 
-Public prototype: <https://yournest-founder-resource-portal-phase1.major-project848.chatgpt.site/>
+Public prototype: <https://akshatb848.github.io/Founders-Resource-Portal/>
 
-GitHub Pages preview: <https://akshatb848.github.io/Founders-Resource-Portal/> — deployed automatically from `dist/` on every push to `main` by `.github/workflows/pages.yml` (requires Settings → Pages → Source: GitHub Actions).
+Hosted on GitHub Pages and deployed automatically from `dist/` on every push to `main` by `.github/workflows/pages.yml`. This is the only maintained prototype link. The earlier ChatGPT-hosted copy (`yournest-founder-resource-portal-phase1.major-project848.chatgpt.site`) is retired and no longer updated.
 
 The current frontend demonstrates:
 
@@ -45,7 +45,7 @@ Do not open `index.html` directly from the filesystem when validating browser be
 - `docs/PROJECT_CONTEXT.md` — complete product and implementation handoff
 - `CLAUDE.md` — operating instructions for Claude Code
 
-The `dist/` directory mirrors the currently published static build. Keep source and distribution files synchronised until a formal build pipeline replaces this arrangement.
+The `dist/` directory is the published static build served by GitHub Pages. Keep source and distribution files synchronised until a formal build pipeline replaces this arrangement.
 
 ## Product boundary
 
